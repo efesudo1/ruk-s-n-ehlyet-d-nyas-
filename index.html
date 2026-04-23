@@ -58,10 +58,22 @@
             z-index: 10;
         }
 
+        @media (max-width: 480px) {
+            header {
+                padding: 1.5rem 1rem;
+            }
+        }
+
         h1 {
             font-size: 2rem;
             font-weight: 900;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
         }
 
         .music-btn {
@@ -76,6 +88,16 @@
             font-size: 1.5rem;
             cursor: pointer;
             transition: transform 0.2s;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (max-width: 480px) {
+            .music-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
         }
 
         .music-btn:active { transform: scale(0.9); }
@@ -100,6 +122,15 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (max-width: 480px) {
+            .tab-btn {
+                font-size: 0.9rem;
+                padding: 8px 14px;
+            }
         }
 
         .tab-btn.active {
@@ -115,6 +146,12 @@
             margin: 0 auto;
         }
 
+        @media (max-width: 480px) {
+            .content-section {
+                padding: 15px;
+            }
+        }
+
         .content-section.active {
             display: block;
             animation: fadeIn 0.5s;
@@ -128,6 +165,20 @@
             perspective: 1000px;
         }
 
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 12px;
+            }
+        }
+
         .flip-card {
             background-color: transparent;
             width: 100%;
@@ -136,6 +187,18 @@
             position: relative;
             transition: transform 0.35s cubic-bezier(0.4,0.2,0.2,1), z-index 0s;
             z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .flip-card {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .flip-card {
+                height: 200px;
+            }
         }
 
         .flip-card.expanded {
@@ -239,6 +302,14 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             cursor: pointer;
             transition: transform 0.2s;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (max-width: 480px) {
+            .qa-item {
+                padding: 15px;
+            }
         }
 
         .qa-item:active { transform: scale(0.98); }
@@ -283,6 +354,18 @@
             cursor: pointer;
             z-index: 100;
             animation: bounce 2s infinite;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (max-width: 480px) {
+            .game-launcher {
+                bottom: 20px;
+                right: 20px;
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+            }
         }
 
         /* Mini Game Modal */
@@ -582,11 +665,25 @@
             position: relative;
             width: 100%;
             height: calc(100vh - 180px);
-            min-height: 400px;
+            min-height: 300px;
             background: #87CEEB;
             overflow: hidden;
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 768px) {
+            #runner-container {
+                height: calc(100vh - 160px);
+                min-height: 280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #runner-container {
+                height: calc(100vh - 140px);
+                min-height: 250px;
+            }
         }
 
         /* Sky gradient */
@@ -683,6 +780,22 @@
             transform: translateY(0);
         }
 
+        @media (max-width: 768px) {
+            #rukis-runner {
+                left: 80px;
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #rukis-runner {
+                left: 50px;
+                width: 50px;
+                height: 50px;
+            }
+        }
+
         #rukis-runner img {
             width: 100%;
             height: 100%;
@@ -728,6 +841,20 @@
             align-items: center;
         }
 
+        @media (max-width: 768px) {
+            .runner-sign {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .runner-sign {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
         .runner-sign img {
             width: 60px;
             height: 60px;
@@ -761,10 +888,17 @@
         .runner-hud-item {
             background: rgba(0,0,0,0.5);
             color: white;
-            padding: 5px 14px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-weight: 900;
             font-size: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .runner-hud-item {
+                font-size: 0.9rem;
+                padding: 5px 10px;
+            }
         }
 
         /* Question overlay */
@@ -779,6 +913,13 @@
             align-items: center;
             padding: 20px;
             gap: 12px;
+        }
+
+        @media (max-width: 480px) {
+            #runner-question-overlay {
+                padding: 15px;
+                gap: 10px;
+            }
         }
 
         #runner-question-overlay.show {
@@ -797,6 +938,13 @@
             border: 3px solid #FFB347;
         }
 
+        @media (max-width: 480px) {
+            #runner-q-sign {
+                width: 80px;
+                height: 80px;
+            }
+        }
+
         #runner-q-text {
             color: white;
             font-size: 1.1rem;
@@ -804,14 +952,29 @@
             text-align: center;
             max-width: 500px;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            padding: 0 10px;
+        }
+
+        @media (max-width: 480px) {
+            #runner-q-text {
+                font-size: 1rem;
+            }
         }
 
         #runner-choices {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
             width: 100%;
             max-width: 500px;
+            padding: 0 10px;
+        }
+
+        @media (max-width: 480px) {
+            #runner-choices {
+                gap: 10px;
+                padding: 0 5px;
+            }
         }
 
         .runner-choice-btn {
@@ -819,12 +982,34 @@
             color: var(--text-main);
             border: 3px solid var(--secondary);
             border-radius: 12px;
-            padding: 10px 14px;
-            font-size: 0.95rem;
+            padding: 12px 16px;
+            font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
             text-align: center;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .runner-choice-btn {
+                padding: 14px 18px;
+                font-size: 1.05rem;
+                min-height: 55px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .runner-choice-btn {
+                padding: 16px 20px;
+                font-size: 1.1rem;
+                min-height: 60px;
+            }
         }
 
         .runner-choice-btn:hover, .runner-choice-btn:active {
@@ -860,6 +1045,13 @@
             padding: 20px;
         }
 
+        @media (max-width: 480px) {
+            .runner-screen {
+                padding: 15px;
+                gap: 12px;
+            }
+        }
+
         #runner-start-screen {
             background: linear-gradient(135deg, #FFB347, #FF6961);
         }
@@ -881,6 +1073,12 @@
             text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
         }
 
+        @media (max-width: 480px) {
+            .runner-screen h2 {
+                font-size: 1.5rem;
+            }
+        }
+
         .runner-screen p {
             font-size: 1.1rem;
             color: rgba(255,255,255,0.95);
@@ -888,8 +1086,14 @@
             max-width: 400px;
         }
 
+        @media (max-width: 480px) {
+            .runner-screen p {
+                font-size: 0.95rem;
+            }
+        }
+
         .runner-btn {
-            padding: 12px 36px;
+            padding: 14px 36px;
             border: none;
             border-radius: 50px;
             font-size: 1.1rem;
@@ -897,6 +1101,20 @@
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             transition: transform 0.15s;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (max-width: 480px) {
+            .runner-btn {
+                padding: 14px 28px;
+                font-size: 1rem;
+                min-height: 50px;
+            }
         }
 
         .runner-btn:active { transform: scale(0.95); }
@@ -960,6 +1178,18 @@
             font-size: 4rem;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
             animation: canavariWobble 0.5s ease infinite alternate;
+        }
+
+        @media (max-width: 768px) {
+            #canavari-body {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #canavari-body {
+                font-size: 3rem;
+            }
         }
 
         @keyframes canavariWobble {
