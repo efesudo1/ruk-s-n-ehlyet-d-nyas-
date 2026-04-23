@@ -9,10 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #FFF8E7; /* Soft yellow */
-            --primary: #FFB347;  /* Sweet orange */
-            --secondary: #AEC6CF; /* Light blue */
-            --text-main: #5D4037; /* Warm brown */
+            --bg-color: #FFF8E7;
+            --primary: #FFB347;
+            --secondary: #AEC6CF;
+            --text-main: #5D4037;
             --card-bg: #FFFFFF;
             --success: #77DD77;
             --danger: #FF6961;
@@ -120,7 +120,7 @@
             animation: fadeIn 0.5s;
         }
 
-        /* Flip Card Styles */
+        /* ===== FLIP CARD STYLES ===== */
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -133,6 +133,14 @@
             width: 100%;
             height: 300px;
             cursor: pointer;
+            position: relative;
+            transition: transform 0.35s cubic-bezier(0.4,0.2,0.2,1), z-index 0s;
+            z-index: 1;
+        }
+
+        .flip-card.expanded {
+            transform: scale(1.75);
+            z-index: 500;
         }
 
         .flip-card-inner {
@@ -148,6 +156,10 @@
 
         .flip-card.flipped .flip-card-inner {
             transform: rotateY(180deg);
+        }
+
+        .flip-card.expanded .flip-card-inner {
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
         }
 
         .flip-card-front, .flip-card-back {
@@ -171,7 +183,7 @@
             object-fit: contain;
             border-radius: 10px;
         }
-        
+
         .flip-card-front .placeholder-icon {
             font-size: 4rem;
             color: var(--secondary);
@@ -202,7 +214,18 @@
             font-size: 0.9rem;
         }
 
-        /* Q&A Cards (List style) */
+        /* Expanded overlay backdrop */
+        #card-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 400;
+            backdrop-filter: blur(3px);
+        }
+        #card-backdrop.visible { display: block; }
+
+        /* Q&A Cards */
         .qa-list {
             display: flex;
             flex-direction: column;
@@ -219,7 +242,7 @@
         }
 
         .qa-item:active { transform: scale(0.98); }
-        
+
         .qa-question {
             font-weight: 900;
             font-size: 1.2rem;
@@ -311,10 +334,7 @@
             padding: 20px;
         }
 
-        .zabit-img {
-            font-size: 6rem;
-            margin-bottom: 20px;
-        }
+        .zabit-img { font-size: 6rem; margin-bottom: 20px; }
 
         .bubble {
             background: var(--danger);
@@ -326,7 +346,7 @@
             position: relative;
             margin-bottom: 30px;
         }
-        
+
         .bubble::after {
             content: '';
             position: absolute;
@@ -350,7 +370,7 @@
             margin-top: 20px;
         }
 
-        /* Top bildirim bantı */
+        /* Top Banner */
         .top-banner {
             width: 100%;
             background: linear-gradient(90deg, #5D4037, #FF6961, #FFB347, #5D4037);
@@ -369,11 +389,13 @@
             position: relative;
             z-index: 100;
         }
+
         @keyframes bannerShift {
             0%   { background-position: 0% 50%; }
             50%  { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
+
         .top-banner .dot {
             width: 8px;
             height: 8px;
@@ -383,14 +405,15 @@
             animation: dotBlink 1s ease infinite;
             flex-shrink: 0;
         }
+
         @keyframes dotBlink {
             0%, 100% { opacity: 1; transform: scale(1); }
             50%       { opacity: 0.3; transform: scale(0.7); }
         }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse-fast { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
-        /* === SPLASH SCREEN === */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ===== SPLASH SCREEN ===== */
         #splash-screen {
             position: fixed;
             inset: 0;
@@ -403,11 +426,13 @@
             gap: 18px;
             overflow: hidden;
             transition: opacity 0.7s ease, transform 0.7s ease, visibility 0.7s;
-            animation: forceHideSplash 0.5s ease 5s forwards; /* Failsafe if JS crashes */
+            animation: forceHideSplash 0.5s ease 5s forwards;
         }
+
         @keyframes forceHideSplash {
             to { opacity: 0; pointer-events: none; visibility: hidden; z-index: -100; }
         }
+
         #splash-screen.hide {
             opacity: 0;
             pointer-events: none;
@@ -416,7 +441,6 @@
             z-index: -100;
         }
 
-        /* Yol şeridi */
         .splash-road {
             position: absolute;
             bottom: 0;
@@ -426,6 +450,7 @@
             background: #444;
             overflow: hidden;
         }
+
         .splash-road::before {
             content: '';
             position: absolute;
@@ -436,12 +461,12 @@
             background: repeating-linear-gradient(90deg, #fff 0px, #fff 60px, transparent 60px, transparent 120px);
             animation: roadMove 1s linear infinite;
         }
+
         @keyframes roadMove {
             from { transform: translateX(0); }
             to   { transform: translateX(120px); }
         }
 
-        /* Araba */
         .splash-car {
             position: absolute;
             bottom: 14px;
@@ -449,6 +474,7 @@
             animation: carDrive 1.8s cubic-bezier(0.4,0,0.2,1) forwards;
             filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
         }
+
         @keyframes carDrive {
             0%   { left: -120px; }
             60%  { left: calc(50% - 40px); }
@@ -456,7 +482,6 @@
             100% { left: calc(50% - 40px); }
         }
 
-        /* Patlama efekti (araba durduğunda) */
         .splash-stars {
             position: absolute;
             bottom: 55px;
@@ -467,13 +492,13 @@
             animation: starsPopIn 0.4s ease 1.6s forwards;
             pointer-events: none;
         }
+
         @keyframes starsPopIn {
             0%   { opacity: 0; transform: translateX(-50%) scale(0.5) translateY(0); }
             70%  { opacity: 1; transform: translateX(-50%) scale(1.3) translateY(-8px); }
             100% { opacity: 1; transform: translateX(-50%) scale(1) translateY(-6px); }
         }
 
-        /* Başlık */
         .splash-title {
             font-size: clamp(1.8rem, 6vw, 3rem);
             font-weight: 900;
@@ -485,6 +510,7 @@
             padding: 0 20px;
             letter-spacing: -0.5px;
         }
+
         .splash-subtitle {
             font-size: clamp(1rem, 3vw, 1.4rem);
             color: rgba(255,255,255,0.9);
@@ -494,12 +520,12 @@
             text-align: center;
             padding: 0 20px;
         }
+
         @keyframes splashTitleIn {
             from { opacity: 0; transform: translateY(20px); }
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* Başla butonu */
         .splash-btn {
             position: relative;
             z-index: 10000;
@@ -518,19 +544,21 @@
             transition: transform 0.15s;
             letter-spacing: 0.5px;
         }
+
         .splash-btn:active { transform: scale(0.94); }
+
         @keyframes splashPulse {
             0%, 100% { box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
             50% { box-shadow: 0 8px 35px rgba(255,105,97,0.5); transform: scale(1.04); }
         }
 
-        /* Confetti parçacıkları */
         .confetti-wrap {
             position: absolute;
             inset: 0;
             pointer-events: none;
             overflow: hidden;
         }
+
         .confetti-wrap span {
             position: absolute;
             top: -30px;
@@ -538,34 +566,488 @@
             opacity: 0.85;
             animation: confettiFall linear infinite;
         }
+
         @keyframes confettiFall {
             0%   { transform: translateY(-30px) rotate(0deg); opacity: 0.9; }
             100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* ===== RUNNER GAME STYLES ===== */
+        #kos-oyunu {
+            padding: 0;
+            max-width: 100%;
+        }
+
+        #runner-container {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 180px);
+            min-height: 400px;
+            background: #87CEEB;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Sky gradient */
+        #runner-sky {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 55%;
+            background: linear-gradient(to bottom, #87CEEB, #B0E0E6);
+        }
+
+        /* Sun */
+        #runner-sun {
+            position: absolute;
+            top: 20px;
+            right: 60px;
+            width: 60px;
+            height: 60px;
+            background: #FFD700;
+            border-radius: 50%;
+            box-shadow: 0 0 30px #FFD700;
+        }
+
+        /* Mountains / background scenery */
+        #runner-mountains {
+            position: absolute;
+            bottom: 40%;
+            left: 0;
+            width: 200%;
+            display: flex;
+            animation: bgScroll 25s linear infinite;
+        }
+
+        @keyframes bgScroll {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        .mountain {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            flex-shrink: 0;
+        }
+
+        /* Ground */
+        #runner-ground {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: #555;
+            overflow: hidden;
+        }
+
+        /* Road dashes */
+        #runner-ground::before {
+            content: '';
+            position: absolute;
+            top: 40%;
+            left: -200px;
+            width: 200%;
+            height: 6px;
+            background: repeating-linear-gradient(90deg, #fff 0px, #fff 60px, transparent 60px, transparent 120px);
+            animation: roadDash 0.5s linear infinite;
+        }
+
+        @keyframes roadDash {
+            from { transform: translateX(0); }
+            to   { transform: translateX(120px); }
+        }
+
+        /* Grass strips */
+        #runner-ground::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20%;
+            background: #4CAF50;
+        }
+
+        /* Character */
+        #rukis-runner {
+            position: absolute;
+            bottom: calc(40% - 10px);
+            left: 100px;
+            width: 70px;
+            height: 70px;
+            z-index: 10;
+            transform: translateY(0);
+        }
+
+        #rukis-runner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #FFB347;
+            background: white;
+        }
+
+        #rukis-name-tag {
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 900;
+            padding: 2px 8px;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+
+        /* Running animation */
+        @keyframes rukisRun {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50%       { transform: translateY(-8px) rotate(2deg); }
+        }
+
+        #rukis-runner.running {
+            animation: rukisRun 0.4s ease-in-out infinite;
+        }
+
+        /* Traffic sign on road */
+        .runner-sign {
+            position: absolute;
+            bottom: calc(40% + 5px);
+            width: 70px;
+            height: 70px;
+            z-index: 8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .runner-sign img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: white;
+            padding: 3px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border: 2px solid #333;
+        }
+
+        .runner-sign-pole {
+            width: 5px;
+            height: 25px;
+            background: #888;
+            margin-top: 0;
+        }
+
+        /* HUD */
+        #runner-hud {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 15px;
+            z-index: 20;
+        }
+
+        .runner-hud-item {
+            background: rgba(0,0,0,0.5);
+            color: white;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-weight: 900;
+            font-size: 1rem;
+        }
+
+        /* Question overlay */
+        #runner-question-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 30;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            gap: 12px;
+        }
+
+        #runner-question-overlay.show {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+
+        #runner-q-sign {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: white;
+            padding: 5px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border: 3px solid #FFB347;
+        }
+
+        #runner-q-text {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 900;
+            text-align: center;
+            max-width: 500px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
+
+        #runner-choices {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .runner-choice-btn {
+            background: white;
+            color: var(--text-main);
+            border: 3px solid var(--secondary);
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .runner-choice-btn:hover, .runner-choice-btn:active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.03);
+        }
+
+        .runner-choice-btn.correct {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .runner-choice-btn.wrong {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        /* Start/Game Over/Win screens */
+        .runner-screen {
+            position: absolute;
+            inset: 0;
+            z-index: 40;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #runner-start-screen {
+            background: linear-gradient(135deg, #FFB347, #FF6961);
+        }
+
+        #runner-gameover-screen {
+            background: rgba(0,0,0,0.88);
+            display: none;
+        }
+
+        #runner-win-screen {
+            background: linear-gradient(135deg, #77DD77, #AEC6CF);
+            display: none;
+        }
+
+        .runner-screen h2 {
+            font-size: 2rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .runner-screen p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.95);
+            font-weight: 700;
+            max-width: 400px;
+        }
+
+        .runner-btn {
+            padding: 12px 36px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.15s;
+        }
+
+        .runner-btn:active { transform: scale(0.95); }
+        .runner-btn-primary { background: white; color: #FF6961; }
+        .runner-btn-danger  { background: var(--danger); color: white; }
+        .runner-btn-success { background: var(--success); color: white; }
+
+        /* Fire / Burn effect */
+        @keyframes burnShake {
+            0%  { transform: translateX(0) rotate(0); filter: brightness(1); }
+            15% { transform: translateX(-8px) rotate(-5deg); filter: brightness(1.5) hue-rotate(30deg); }
+            30% { transform: translateX(8px) rotate(5deg); filter: brightness(2) hue-rotate(60deg); }
+            45% { transform: translateX(-8px) rotate(-5deg); filter: brightness(2.5) hue-rotate(90deg); }
+            60% { transform: translateX(8px) rotate(5deg); filter: brightness(3) hue-rotate(120deg); }
+            100% { transform: translateX(0) rotate(0); filter: brightness(4) hue-rotate(180deg) saturate(5); }
+        }
+
+        #rukis-runner.burning {
+            animation: burnShake 0.8s ease forwards;
+        }
+
+        /* Fire emoji overlay */
+        #fire-overlay {
+            position: absolute;
+            bottom: 38%;
+            left: 75px;
+            font-size: 3rem;
+            z-index: 15;
+            display: none;
+            pointer-events: none;
+            animation: fireRise 1s ease forwards;
+        }
+
+        @keyframes fireRise {
+            from { opacity: 1; transform: scale(0.5) translateY(0); }
+            to   { opacity: 0; transform: scale(2) translateY(-50px); }
+        }
+
+        /* Dağ Canavarı Aslan */
+        #dag-canavari {
+            position: absolute;
+            bottom: 38%;
+            right: -120px;
+            z-index: 25;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: right 0.8s cubic-bezier(0.4,0,0.2,1);
+            pointer-events: none;
+        }
+
+        #dag-canavari.visible {
+            right: 20px;
+        }
+
+        #dag-canavari.leaving {
+            right: -180px;
+        }
+
+        #canavari-body {
+            font-size: 4rem;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+            animation: canavariWobble 0.5s ease infinite alternate;
+        }
+
+        @keyframes canavariWobble {
+            from { transform: rotate(-5deg); }
+            to   { transform: rotate(5deg); }
+        }
+
+        #canavari-bubble {
+            background: white;
+            color: var(--text-main);
+            border: 3px solid var(--primary);
+            border-radius: 16px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            white-space: nowrap;
+            margin-bottom: 5px;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        #canavari-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 8px 0;
+            border-style: solid;
+            border-color: white transparent transparent;
+        }
+
+        #canavari-name {
+            font-size: 0.7rem;
+            font-weight: 900;
+            color: var(--primary);
+            background: rgba(255,255,255,0.9);
+            padding: 2px 8px;
+            border-radius: 8px;
+            margin-top: 3px;
+        }
+
+        /* Runner intro/score display */
+        #runner-score-display {
+            font-size: 1.2rem;
+        }
+
+        /* Correct flash */
+        @keyframes correctFlash {
+            0%   { background: rgba(119,221,119,0.5); }
+            100% { background: transparent; }
+        }
+
+        .correct-flash {
+            animation: correctFlash 0.6s ease forwards;
+        }
+
+        /* Bounce keyframe (used by game-launcher) */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ✨ SPLASH / GİRİŞ EKRANI ✨ -->
+    <!-- SPLASH SCREEN -->
     <div id="splash-screen">
-        <!-- Confetti -->
         <div class="confetti-wrap" id="confettiWrap"></div>
-
         <p class="splash-title">🚗 Rukisin Ehliyet Dünyası 🚗</p>
         <p class="splash-subtitle">Yolların ustası olma yolculuğun başlıyor!</p>
-
         <button class="splash-btn" id="splashBtn">Hadi Başlayalım! 🎉</button>
-
-        <!-- Yol ve araba -->
         <div class="splash-road"></div>
         <div class="splash-car">🚗</div>
         <div class="splash-stars">✨🌟✨</div>
     </div>
 
+    <!-- Card expand backdrop -->
+    <div id="card-backdrop"></div>
 
     <div class="top-banner">
         <span class="dot"></span>
-        📖  Rukiş ehliyete hazırlanıyor  🚗 — Hadi başaralım!
+        📖  Rukiş ehliyete hazırlanıyor  🚗 — Hadi başaralım!
         <span class="dot"></span>
     </div>
 
@@ -579,6 +1061,7 @@
         <button class="tab-btn active" data-target="levhalar">Trafik Levhaları</button>
         <button class="tab-btn" data-target="motor">Motor & Araç Tekniği</button>
         <button class="tab-btn" data-target="sorular">Kritik Sorular</button>
+        <button class="tab-btn" data-target="kos-oyunu">🏃 Koşu Oyunu</button>
     </nav>
 
     <main>
@@ -596,15 +1079,93 @@
         <section id="sorular" class="content-section">
             <div class="qa-list" id="sorular-list"></div>
         </section>
+
+        <!-- Koşu Oyunu Section -->
+        <section id="kos-oyunu" class="content-section">
+            <div id="runner-container">
+
+                <!-- Sky & scenery -->
+                <div id="runner-sky"></div>
+                <div id="runner-sun"></div>
+                <div id="runner-mountains"></div>
+
+                <!-- Ground / Road -->
+                <div id="runner-ground"></div>
+
+                <!-- HUD -->
+                <div id="runner-hud" style="display:none;">
+                    <div class="runner-hud-item">🏃 Rukiş</div>
+                    <div class="runner-hud-item" id="runner-score-display">✅ 0 / 10</div>
+                    <div class="runner-hud-item" id="runner-lives">❤️ 1 can</div>
+                </div>
+
+                <!-- Rukiş character -->
+                <div id="rukis-runner">
+                    <img src="avatarjpg.webp" alt="Rukiş" onerror="this.src=''; this.parentElement.innerHTML='<div style=\'font-size:3rem;line-height:70px;text-align:center;\'>🏃‍♀️</div>'">
+                    <div id="rukis-name-tag">Rukiş</div>
+                </div>
+
+                <!-- Fire overlay -->
+                <div id="fire-overlay">🔥🔥🔥</div>
+
+                <!-- Dağ Canavarı Aslan -->
+                <div id="dag-canavari">
+                    <div id="canavari-bubble">Rukiye ge gızım! 🐾</div>
+                    <div id="canavari-body">🐻</div>
+                    <div id="canavari-name">Dağ Canavarı Aslan</div>
+                </div>
+
+                <!-- Question overlay -->
+                <div id="runner-question-overlay">
+                    <img id="runner-q-sign" src="" alt="Levha">
+                    <div id="runner-q-text">Bu işaret ne anlama gelir?</div>
+                    <div id="runner-choices">
+                        <button class="runner-choice-btn" onclick="runnerAnswer(0)">A</button>
+                        <button class="runner-choice-btn" onclick="runnerAnswer(1)">B</button>
+                        <button class="runner-choice-btn" onclick="runnerAnswer(2)">C</button>
+                        <button class="runner-choice-btn" onclick="runnerAnswer(3)">D</button>
+                    </div>
+                </div>
+
+                <!-- Start Screen -->
+                <div class="runner-screen" id="runner-start-screen">
+                    <div style="font-size:4rem;">🏃‍♀️</div>
+                    <h2>Rukiş Koşuyor!</h2>
+                    <p>Trafik levhalarından geç! Her levhada o işaretin anlamını seç. Yanlış cevap verirsen yanarsın! 🔥</p>
+                    <p style="font-size:0.9rem; opacity:0.85;">10 doğru cevap ver ve bitir!</p>
+                    <button class="runner-btn runner-btn-primary" onclick="startRunnerGame()">Başla! 🚀</button>
+                </div>
+
+                <!-- Game Over Screen -->
+                <div class="runner-screen" id="runner-gameover-screen">
+                    <div style="font-size:5rem;">🔥</div>
+                    <h2 style="color: #FF6961;">YANDIN! 🔥</h2>
+                    <p id="gameover-msg">Yanlış cevap verdin! Rukiş alev aldı!</p>
+                    <p id="gameover-score" style="font-size:1.3rem;">Skor: 0 / 10</p>
+                    <button class="runner-btn runner-btn-primary" onclick="startRunnerGame()" style="margin-top:5px;">Tekrar Dene 🔄</button>
+                    <button class="runner-btn runner-btn-danger" onclick="stopRunnerGame()" style="margin-top:5px;">Çıkış</button>
+                </div>
+
+                <!-- Win Screen -->
+                <div class="runner-screen" id="runner-win-screen">
+                    <div style="font-size:5rem;">🏆</div>
+                    <h2>Tebrikler Rukiş! 🎉</h2>
+                    <p>Tüm trafik levhalarını geçtin! Ehliyet sınavına hazırsın!</p>
+                    <div style="font-size:2rem; margin: 5px;">⭐⭐⭐</div>
+                    <button class="runner-btn runner-btn-success" onclick="startRunnerGame()">Tekrar Oyna 🔄</button>
+                    <button class="runner-btn runner-btn-primary" onclick="stopRunnerGame()" style="margin-top:5px;">Çıkış</button>
+                </div>
+
+            </div>
+        </section>
     </main>
 
     <!-- Mini Game Button -->
     <div class="game-launcher" id="startGameBtn" title="Oyunu Başlat!" style="cursor: pointer; z-index: 9999;">🎮</div>
 
-    <!-- Mini Game Modal -->
+    <!-- Mini Game Modal (Rükiş vs. Zabit) -->
     <div id="game-modal">
         <div class="game-area">
-            <!-- Oyun Yönnergeleri -->
             <div id="game-intro" style="position:absolute; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:var(--primary); color:white; text-align:center; padding:20px; z-index:10;">
                 <h2>Rükiş vs. Zabit Muhammed</h2>
                 <p style="margin:20px 0; font-size:1.2rem;">Yaramaz yusufçuk Rükiş'i 5 saniye içinde yakala! Yoksa Zabit Muhammed affetmez...</p>
@@ -612,10 +1173,8 @@
                 <button class="close-game-btn" id="cancelGameBtn" style="background:var(--danger); margin-top:10px;">Vazgeç</button>
             </div>
 
-            <!-- Rükiş -->
             <div id="rukis-char">🕊️</div>
 
-            <!-- Zabit (Kaybetme) -->
             <div id="zabit-screen">
                 <div class="animate__animated animate__tada zabit-img">👮‍♂️🚓</div>
                 <div class="bubble animate__animated animate__shakeX">İn lan arabadan, çık git! 🛑</div>
@@ -623,7 +1182,6 @@
                 <button class="close-game-btn" onclick="closeGame()">Tamam Zabit Bey, Gidiyorum...</button>
             </div>
 
-            <!-- Win -->
             <div id="win-screen">
                 <div class="animate__animated animate__bounceIn" style="font-size: 6rem; margin-bottom:20px;">🏆👑</div>
                 <h2 style="color:var(--success); font-size:2rem; margin-bottom: 20px;">Tebrikler Anneciğim!</h2>
@@ -633,13 +1191,10 @@
         </div>
     </div>
 
-    <!-- Audio Element (Placeholder for actual music) -->
-    <audio id="bgMusic" loop>
-        <!-- You can add a source here later: <source src="assets/music/song.mp3" type="audio/mpeg"> -->
-    </audio>
+    <audio id="bgMusic" loop></audio>
 
     <script>
-        // Veri Yapısı (Kolayca genişletilebilir)
+        // ===== DATA =====
         const data = {
             levhalar: [
                 { id: "Ekran Resmi 2026-04-22 18.43.35.png", title: "Trafik Levhası" },
@@ -813,21 +1368,225 @@
             ]
         };
 
-        // UI Oluşturma Fonksiyonları
+        // ===== RUNNER GAME QUESTIONS =====
+        const RUNNER_QUESTIONS = [
+            {
+                img: "isaret_dogru_04.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Sağa Tehlikeli Viraj", "Sola Tehlikeli Viraj", "Kaygan Yol", "Bozuk Yol"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_05.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Sağa Tehlikeli Virajlar", "Sola Tehlikeli Virajlar", "Çift Viraj (önce sola)", "Tehlikeli İniş"],
+                dogru: 1
+            },
+            {
+                img: "isaret_dogru_06.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Sağa Tehlikeli Virajlar", "Sola Tehlikeli Virajlar", "Çift Viraj (önce sağa)", "Virajlı Yol"],
+                dogru: 2
+            },
+            {
+                img: "isaret_dogru_07.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Diğer Trafik Uyarı İşaretleri", "Yol Çalışması", "Kaygan Yol", "Bozuk Yol"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_08.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Dur", "Yol Ver", "Geçiş Üstünlüğü", "Park Alanı"],
+                dogru: 1
+            },
+            {
+                img: "isaret_dogru_09.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Yol Ver", "Dur", "Azami Hız Sonu", "İlk Yol"],
+                dogru: 1
+            },
+            {
+                img: "isaret_dogru_10.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Yol Ver", "Dur", "Karşıdan Gelene Yol Ver", "Trafik Işığı"],
+                dogru: 2
+            },
+            {
+                img: "isaret_dogru_11.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Öncelik Gerektiren Diğer Trafik", "Yol Ver", "Ana Yol", "Kavşak"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_12.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Girilmez", "Park Yasağı", "Trafik Yok", "Tek Yön"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_13.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Park Yasağı", "Girilmez", "Geçiş Yasağı", "Dur ve Bekle"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_14.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Azami Hız 50 km/s", "Azami Hız 30 km/s", "Azami Hız 70 km/s", "Asgari Hız 50 km/s"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_15.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Yatay İşaretleme Levhası", "Park Alanı", "Bilgi Noktası", "Şerit Sonu"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_16.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Yaya Geçidi", "Okul Geçidi", "Yavaşla", "Bisiklet Yolu"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_17.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Çocuk Geçidi", "Yaya Geçidi", "Yaya Yasağı", "Pedestrian Yolu"],
+                dogru: 1
+            },
+            {
+                img: "isaret_dogru_18.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Bisiklet Yolu", "Yaya Yolu", "Motosiklet Yasağı", "Araç Geçemez"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_19.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Park Alanı", "Otopark", "Dur ve Geç", "Servis Noktası"],
+                dogru: 1
+            },
+            {
+                img: "isaret_dogru_20.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Hastane", "İlk Yardım", "Eczane", "Kurtarma İstasyonu"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_21.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Benzin İstasyonu", "Servis Merkezi", "Araç Yıkama", "Tamirci"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_22.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Sollamak Yasaktır", "Geçiş Yasağı", "İlerlemek Yasak", "Araç Giremez"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_23.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Kamyon Giremez", "Ağır Araç Yasağı", "Taşıt Giremez", "Yük Taşımak Yasak"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_24.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Azami Hız 90 km/s", "Azami Hız 80 km/s", "Azami Hız 70 km/s", "Azami Hız 60 km/s"],
+                dogru: 1
+            },
+            {
+                img: "isaret_dogru_25.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Zorunlu Yön (Sağ)", "Yalnız Düz Gidilir", "Tek Yönlü Yol", "Sağa Dönüş"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_26.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Zorunlu Yön (Sol)", "Yalnız Düz Gidilir", "Sol Şerit", "Sola Dönüş"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_27.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Dönel Kavşak", "Zorunlu Yön (Sağdan Dön)", "Trafik Adası", "Bölünmüş Yol"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_28.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Zorunlu Yön (Düz ve Sağ)", "Çift Şerit", "İki Yön", "Ayrım Noktası"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_29.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Zorunlu Yön (Düz ve Sol)", "Çift Yön", "Şerit Birleşimi", "Bölünme"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_30.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Bisiklet Yolu Sonu", "Yaya Yolu Sonu", "Bisiklet Zorunlu Yol", "Hafif Araç Yolu"],
+                dogru: 2
+            },
+            {
+                img: "isaret_dogru_31.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Bilgi Tabelası", "Şehir Merkezi", "Yön Tabelası", "Turistik Alan"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_32.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Trafik Lambası Var", "Trafik Lambalı Kavşak", "Işıklı Yaya Geçidi", "Sinyal Sistemi"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_33.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Kasis Var (Tümsek)", "Bozuk Yol", "Çukur Yol", "Engebeli Yol"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_34.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Kaygan Yol", "Islak Yol", "Buzlu Yol", "Virajlı Kaygan"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_35.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Yol Çalışması", "İnşaat Alanı", "Yol Kapanıyor", "Çalışma Uyarısı"],
+                dogru: 0
+            },
+            {
+                img: "isaret_dogru_36.png",
+                soru: "Bu trafik işareti ne anlama gelir?",
+                secenekler: ["Taş Düşebilir", "Heyelan Bölgesi", "Kaya Düşer", "Dağlık Alan"],
+                dogru: 0
+            }
+        ];
+
+        // ===== CARD RENDERING =====
         function createFlipCard(item, folder) {
             const imgSrc = `images/${item.id}`;
             const placeholder = folder === 'levhalar' ? '🚸' : '⚙️';
-            
+
             return `
                 <div class="flip-card animate__animated animate__zoomIn">
                     <div class="flip-card-inner">
-                        <div class="flip-card-front" style="overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; background: white; padding: 10px; border-radius: 15px;">
-                            <img src="${imgSrc}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 10px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="flip-card-front" style="overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; background:white; padding:10px; border-radius:15px;">
+                            <img src="${imgSrc}" alt="${item.title}" style="width:100%; height:100%; object-fit:contain; border-radius:10px;"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                             <div class="placeholder-icon" style="display:none; font-size:4rem;">${placeholder}</div>
                         </div>
-                        <div class="flip-card-back" style="padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--secondary); border-radius: 15px;">
-                            <p style="font-size: 1.1rem; padding: 10px;">Açıklama görselin içindedir.</p>
-                            <img src="${imgSrc}" alt="${item.title}" style="width: 100%; max-height: 80%; object-fit: contain; border-radius: 10px; background: white; padding: 5px;" onerror="this.style.display='none';">
+                        <div class="flip-card-back" style="padding:10px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--secondary); border-radius:15px;">
+                            <p style="font-size:1.1rem; padding:10px;">Açıklama görselin içindedir.</p>
+                            <img src="${imgSrc}" alt="${item.title}" style="width:100%; max-height:80%; object-fit:contain; border-radius:10px; background:white; padding:5px;"
+                                onerror="this.style.display='none';">
                         </div>
                     </div>
                 </div>
@@ -841,25 +1600,18 @@
                         <span>❓ ${item.q}</span>
                         <span>🔽</span>
                     </div>
-                    <div class="qa-answer">
-                        ✅ ${item.a}
-                    </div>
+                    <div class="qa-answer">✅ ${item.a}</div>
                 </div>
             `;
         }
 
-        // İçeriği Render Et
         function renderContent() {
-            const levhalarGrid = document.getElementById('levhalar-grid');
-            const motorGrid = document.getElementById('motor-grid');
-            const sorularList = document.getElementById('sorular-list');
-
-            levhalarGrid.innerHTML = data.levhalar.map(item => createFlipCard(item, 'levhalar')).join('');
-            motorGrid.innerHTML = data.motor.map(item => createFlipCard(item, 'motor')).join('');
-            sorularList.innerHTML = data.sorular.map(item => createQACard(item)).join('');
+            document.getElementById('levhalar-grid').innerHTML = data.levhalar.map(i => createFlipCard(i, 'levhalar')).join('');
+            document.getElementById('motor-grid').innerHTML = data.motor.map(i => createFlipCard(i, 'motor')).join('');
+            document.getElementById('sorular-list').innerHTML = data.sorular.map(i => createQACard(i)).join('');
         }
 
-        // Tab Değiştirme Mantığı
+        // ===== TABS =====
         const tabs = document.querySelectorAll('.tab-btn');
         const sections = document.querySelectorAll('.content-section');
 
@@ -867,13 +1619,12 @@
             tab.addEventListener('click', () => {
                 tabs.forEach(t => t.classList.remove('active'));
                 sections.forEach(s => s.classList.remove('active'));
-
                 tab.classList.add('active');
                 document.getElementById(tab.dataset.target).classList.add('active');
             });
         });
 
-        // Müzik Kontrolü
+        // ===== MUSIC =====
         const musicBtn = document.getElementById('musicBtn');
         const bgMusic = document.getElementById('bgMusic');
         let isMusicPlaying = false;
@@ -883,30 +1634,71 @@
                 bgMusic.pause();
                 musicBtn.textContent = '🎵';
             } else {
-                // If there's an actual audio source, play it. Otherwise, just toggle state.
-                bgMusic.play().catch(e => console.log("Müzik kaynağı henüz eklenmedi."));
+                bgMusic.play().catch(() => {});
                 musicBtn.textContent = '🔊';
             }
             isMusicPlaying = !isMusicPlaying;
         });
 
-        // Mini Oyun Mantığı: Rükiş vs. Zabit Muhammed
+        // ===== FLIP CARD CLICK (with expand/zoom) =====
+        let expandedCard = null;
+        const backdrop = document.getElementById('card-backdrop');
+
+        document.addEventListener('click', (e) => {
+            // Close expanded card if backdrop clicked
+            if (e.target === backdrop) {
+                collapseCard();
+                return;
+            }
+
+            const card = e.target.closest('.flip-card');
+            if (!card) return;
+
+            if (expandedCard && expandedCard !== card) {
+                collapseCard();
+            }
+
+            card.classList.toggle('flipped');
+
+            if (!card.classList.contains('expanded')) {
+                card.classList.add('expanded');
+                backdrop.classList.add('visible');
+                expandedCard = card;
+            } else {
+                collapseCard();
+            }
+        });
+
+        function collapseCard() {
+            if (expandedCard) {
+                expandedCard.classList.remove('expanded');
+                expandedCard = null;
+            }
+            backdrop.classList.remove('visible');
+        }
+
+        // QA cards
+        document.addEventListener('click', (e) => {
+            const qaItem = e.target.closest('.qa-item');
+            if (qaItem) qaItem.classList.toggle('open');
+        });
+
+        // ===== MINI GAME (Rükiş vs. Zabit) =====
         const gameModal = document.getElementById('game-modal');
         const startGameBtn = document.getElementById('startGameBtn');
         const cancelGameBtn = document.getElementById('cancelGameBtn');
         const startTimerBtn = document.getElementById('startTimerBtn');
         const gameIntro = document.getElementById('game-intro');
-        const rukis = document.getElementById('rukis-char');
+        const rukisChar = document.getElementById('rukis-char');
         const zabitScreen = document.getElementById('zabit-screen');
         const winScreen = document.getElementById('win-screen');
-        
-        let gameTimer;
-        let moveInterval;
+
+        let gameTimer, moveInterval;
 
         startGameBtn.addEventListener('click', () => {
             gameModal.style.display = 'flex';
             gameIntro.style.display = 'flex';
-            rukis.style.display = 'none';
+            rukisChar.style.display = 'none';
             zabitScreen.style.display = 'none';
             winScreen.style.display = 'none';
         });
@@ -915,54 +1707,36 @@
 
         startTimerBtn.addEventListener('click', () => {
             gameIntro.style.display = 'none';
-            rukis.style.display = 'block';
-            
-            // Rükiş'i zıplat
+            rukisChar.style.display = 'block';
             moveRukis();
             moveInterval = setInterval(moveRukis, 800);
-
-            // 5 Saniye Süre
-            gameTimer = setTimeout(() => {
-                loseGame();
-            }, 5000);
+            gameTimer = setTimeout(loseGame, 5000);
         });
 
         function moveRukis() {
             const area = document.querySelector('.game-area');
             const maxX = area.clientWidth - 80;
             const maxY = area.clientHeight - 80;
-            
-            const randomX = Math.floor(Math.random() * maxX);
-            const randomY = Math.floor(Math.random() * maxY);
-
-            rukis.style.left = `${randomX}px`;
-            rukis.style.top = `${randomY}px`;
-            
-            // Rastgele boyut ve rotasyon efekti
+            rukisChar.style.left = Math.floor(Math.random() * maxX) + 'px';
+            rukisChar.style.top = Math.floor(Math.random() * maxY) + 'px';
             const scale = 0.8 + Math.random() * 0.4;
             const rot = -20 + Math.random() * 40;
-            rukis.style.transform = `scale(${scale}) rotate(${rot}deg)`;
+            rukisChar.style.transform = `scale(${scale}) rotate(${rot}deg)`;
         }
 
-        // Rükiş'e tıklanınca Kazan
-        rukis.addEventListener('mousedown', () => {
-            winGame();
-        });
-        rukis.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            winGame();
-        });
+        rukisChar.addEventListener('mousedown', winMiniGame);
+        rukisChar.addEventListener('touchstart', (e) => { e.preventDefault(); winMiniGame(); });
 
-        function winGame() {
+        function winMiniGame() {
             clearTimeout(gameTimer);
             clearInterval(moveInterval);
-            rukis.style.display = 'none';
+            rukisChar.style.display = 'none';
             winScreen.style.display = 'flex';
         }
 
         function loseGame() {
             clearInterval(moveInterval);
-            rukis.style.display = 'none';
+            rukisChar.style.display = 'none';
             zabitScreen.style.display = 'flex';
         }
 
@@ -973,32 +1747,260 @@
         }
         window.closeGame = closeGame;
 
-        // Başlangıç
-        renderContent();
+        // ===== RUNNER GAME =====
+        let runner = {
+            running: false,
+            paused: false,
+            score: 0,
+            totalToWin: 10,
+            signs: [],
+            currentQuestion: null,
+            loopId: null,
+            signSpawnId: null,
+            bearTimerId: null,
+            questionPool: [...RUNNER_QUESTIONS],
+            usedIndices: new Set()
+        };
 
-        // Kart Dönme (Flip) İçin Genel Click Dinleyicisi (Mobilde daha güvenilir)
-        document.addEventListener('click', (e) => {
-            const card = e.target.closest('.flip-card');
-            if (card) {
-                card.classList.toggle('flipped');
-            }
-        });
-        
-        // Soru (QA) Kartları Açma Kapama İçin Genel Click Dinleyicisi
-        document.addEventListener('click', (e) => {
-            const qaItem = e.target.closest('.qa-item');
-            if (qaItem) {
-                qaItem.classList.toggle('open');
-            }
-        });
+        const runnerContainer  = document.getElementById('runner-container');
+        const runnerHUD        = document.getElementById('runner-hud');
+        const rukisRunner      = document.getElementById('rukis-runner');
+        const runnerScoreDsp   = document.getElementById('runner-score-display');
+        const questionOverlay  = document.getElementById('runner-question-overlay');
+        const runnerQSign      = document.getElementById('runner-q-sign');
+        const runnerQText      = document.getElementById('runner-q-text');
+        const runnerChoices    = document.getElementById('runner-choices');
+        const startScreen      = document.getElementById('runner-start-screen');
+        const gameoverScreen   = document.getElementById('runner-gameover-screen');
+        const winRunScreen     = document.getElementById('runner-win-screen');
+        const fireOverlay      = document.getElementById('fire-overlay');
+        const dagCanavari      = document.getElementById('dag-canavari');
 
-        // === SPLASH SCREEN MANTIĞI ===
+        function getNextQuestion() {
+            if (runner.usedIndices.size >= RUNNER_QUESTIONS.length) {
+                runner.usedIndices.clear();
+            }
+            let idx;
+            do {
+                idx = Math.floor(Math.random() * RUNNER_QUESTIONS.length);
+            } while (runner.usedIndices.has(idx));
+            runner.usedIndices.add(idx);
+            return RUNNER_QUESTIONS[idx];
+        }
+
+        function startRunnerGame() {
+            runner.running = true;
+            runner.paused = false;
+            runner.score = 0;
+            runner.signs = [];
+            runner.currentQuestion = null;
+            runner.usedIndices = new Set();
+
+            // Remove any leftover sign elements
+            document.querySelectorAll('.runner-sign').forEach(s => s.remove());
+
+            startScreen.style.display = 'none';
+            gameoverScreen.style.display = 'none';
+            winRunScreen.style.display = 'none';
+            questionOverlay.classList.remove('show');
+            fireOverlay.style.display = 'none';
+            runnerHUD.style.display = 'flex';
+            rukisRunner.classList.add('running');
+
+            updateScoreDisplay();
+            spawnSign();
+            runner.signSpawnId = setInterval(spawnSign, 3500);
+            runner.loopId = setInterval(runnerTick, 30);
+            scheduleBear();
+        }
+        window.startRunnerGame = startRunnerGame;
+
+        function stopRunnerGame() {
+            clearRunnerTimers();
+            runner.running = false;
+            rukisRunner.classList.remove('running');
+            runnerHUD.style.display = 'none';
+            questionOverlay.classList.remove('show');
+            document.querySelectorAll('.runner-sign').forEach(s => s.remove());
+            runner.signs = [];
+            hideBear();
+            startScreen.style.display = 'flex';
+            gameoverScreen.style.display = 'none';
+            winRunScreen.style.display = 'none';
+        }
+        window.stopRunnerGame = stopRunnerGame;
+
+        function clearRunnerTimers() {
+            clearInterval(runner.loopId);
+            clearInterval(runner.signSpawnId);
+            clearTimeout(runner.bearTimerId);
+        }
+
+        function spawnSign() {
+            if (!runner.running || runner.paused) return;
+
+            const q = getNextQuestion();
+            const el = document.createElement('div');
+            el.className = 'runner-sign';
+            el.innerHTML = `<img src="${q.img}" alt="levha"><div class="runner-sign-pole"></div>`;
+
+            const containerWidth = runnerContainer.clientWidth;
+            el.style.left = containerWidth + 'px';
+            runnerContainer.appendChild(el);
+
+            runner.signs.push({
+                el,
+                x: containerWidth,
+                question: q,
+                triggered: false
+            });
+        }
+
+        function runnerTick() {
+            if (!runner.running || runner.paused) return;
+
+            const speed = 3;
+            const triggerX = 180;
+
+            runner.signs = runner.signs.filter(sign => {
+                sign.x -= speed;
+                sign.el.style.left = sign.x + 'px';
+
+                if (sign.x < triggerX && !sign.triggered) {
+                    sign.triggered = true;
+                    pauseAndAsk(sign);
+                    return true;
+                }
+
+                if (sign.x < -100) {
+                    sign.el.remove();
+                    return false;
+                }
+                return true;
+            });
+        }
+
+        function pauseAndAsk(sign) {
+            runner.paused = true;
+            runner.currentQuestion = sign.question;
+
+            runnerQSign.src = sign.question.img;
+            runnerQText.textContent = sign.question.soru;
+
+            const btns = runnerChoices.querySelectorAll('.runner-choice-btn');
+            sign.question.secenekler.forEach((opt, i) => {
+                btns[i].textContent = opt;
+                btns[i].className = 'runner-choice-btn';
+                btns[i].disabled = false;
+            });
+
+            // Remove sign element and its reference before showing overlay
+            runner.signs = runner.signs.filter(s => s !== sign);
+            sign.el.remove();
+
+            questionOverlay.classList.add('show');
+        }
+
+        function runnerAnswer(choice) {
+            if (!runner.currentQuestion) return;
+
+            const q = runner.currentQuestion;
+            const btns = runnerChoices.querySelectorAll('.runner-choice-btn');
+
+            btns.forEach(b => b.disabled = true);
+            btns[choice].classList.add(choice === q.dogru ? 'correct' : 'wrong');
+            if (choice !== q.dogru) btns[q.dogru].classList.add('correct');
+
+            setTimeout(() => {
+                questionOverlay.classList.remove('show');
+                runner.currentQuestion = null;
+
+                if (choice === q.dogru) {
+                    runner.score++;
+                    updateScoreDisplay();
+                    runnerContainer.classList.add('correct-flash');
+                    setTimeout(() => runnerContainer.classList.remove('correct-flash'), 600);
+
+                    if (runner.score >= runner.totalToWin) {
+                        runnerWin();
+                    } else {
+                        runner.paused = false;
+                    }
+                } else {
+                    runnerGameOver(q.secenekler[choice]);
+                }
+            }, 900);
+        }
+        window.runnerAnswer = runnerAnswer;
+
+        function updateScoreDisplay() {
+            runnerScoreDsp.textContent = `✅ ${runner.score} / ${runner.totalToWin}`;
+        }
+
+        function runnerGameOver(wrongAnswer) {
+            clearRunnerTimers();
+            runner.running = false;
+            rukisRunner.classList.remove('running');
+            rukisRunner.classList.add('burning');
+
+            fireOverlay.style.display = 'block';
+            fireOverlay.style.animation = 'none';
+            fireOverlay.offsetHeight; // reflow
+            fireOverlay.style.animation = 'fireRise 1.2s ease forwards';
+
+            setTimeout(() => {
+                rukisRunner.classList.remove('burning');
+                fireOverlay.style.display = 'none';
+                document.getElementById('gameover-msg').textContent =
+                    `"${wrongAnswer}" — Yanlış! Rukiş alev aldı! 🔥`;
+                document.getElementById('gameover-score').textContent =
+                    `Skor: ${runner.score} / ${runner.totalToWin}`;
+                runnerHUD.style.display = 'none';
+                gameoverScreen.style.display = 'flex';
+                hideBear();
+            }, 1400);
+        }
+
+        function runnerWin() {
+            clearRunnerTimers();
+            runner.running = false;
+            rukisRunner.classList.remove('running');
+            runnerHUD.style.display = 'none';
+            winRunScreen.style.display = 'flex';
+            hideBear();
+        }
+
+        // ===== DAĞ CANAVARI ASLAN =====
+        function scheduleBear() {
+            if (!runner.running) return;
+            const delay = 8000 + Math.random() * 7000;
+            runner.bearTimerId = setTimeout(showBear, delay);
+        }
+
+        function showBear() {
+            if (!runner.running) return;
+            dagCanavari.classList.add('visible');
+            dagCanavari.classList.remove('leaving');
+
+            setTimeout(() => {
+                dagCanavari.classList.add('leaving');
+                dagCanavari.classList.remove('visible');
+                setTimeout(scheduleBear, 1500);
+            }, 3500);
+        }
+
+        function hideBear() {
+            dagCanavari.classList.remove('visible');
+            dagCanavari.classList.add('leaving');
+            clearTimeout(runner.bearTimerId);
+        }
+
+        // ===== SPLASH SCREEN =====
         (function() {
             const splash = document.getElementById('splash-screen');
             const splashBtn = document.getElementById('splashBtn');
             const confettiWrap = document.getElementById('confettiWrap');
 
-            // Confetti parçacıkları üret
             const colors = ['#FFB347','#FF6961','#AEC6CF','#77DD77','#ffffff','#FDFD96'];
             for (let i = 0; i < 28; i++) {
                 const el = document.createElement('span');
@@ -1021,15 +2023,14 @@
                 setTimeout(() => { splash.style.display = 'none'; }, 700);
             }
 
-            // Butona tıklayınca kapat (tüm mobil/PC varyasyonları için)
             splashBtn.addEventListener('click', hideSplash);
             splashBtn.addEventListener('touchstart', hideSplash, {passive: false});
             splashBtn.addEventListener('pointerdown', hideSplash);
-
-            // 4.5 saniye sonra otomatik geç
             setTimeout(hideSplash, 4500);
         })();
 
+        // ===== INIT =====
+        renderContent();
     </script>
 </body>
 </html>
